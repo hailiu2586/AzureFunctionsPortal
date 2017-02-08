@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, OpaqueToken } from '@angular/core';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
@@ -69,6 +69,8 @@ import { MonacoEditorDirective } from './shared/directives/monaco-editor.directi
 import { TableFunctionMonitorPipe } from './table-function-monitor/table-function-monitor.pipe';
 import { ApiDetailsComponent } from './api-details/api-details.component';
 import { ApiNewComponent } from './api-new/api-new.component';
+
+var appName = new OpaqueToken('appName');
 
 @NgModule({
   declarations: [
@@ -147,7 +149,8 @@ import { ApiNewComponent } from './api-new/api-new.component';
       UtilitiesService,
       BackgroundTasksService,
       GlobalStateService,
-      AiService
+      AiService,
+      { provide: 'appRootName', useValue: 'ng2app'}
   ],
   bootstrap: [AppComponent]
 })

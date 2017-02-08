@@ -1,4 +1,4 @@
-import {Directive, EventEmitter, ElementRef, AfterViewInit } from '@angular/core';
+import {Directive, EventEmitter, ElementRef, AfterViewInit, Inject } from '@angular/core';
 import {MonacoModel} from '../models/monaco-model';
 import {GlobalStateService} from '../services/global-state.service';
 import {FunctionsService} from '../services/functions.service';
@@ -24,12 +24,11 @@ export class MonacoEditorDirective {
     private _fileName: string;
 
     constructor(public elementRef: ElementRef,
+        @Inject('appRootName') private appName: string,
         private _globalStateService: GlobalStateService,
-        private _functionsService: FunctionsService
-    ) {
+        private _functionsService: FunctionsService) {
         this.onContentChanged = new EventEmitter<string>();
         this.onSave = new EventEmitter<string>();
-
         this.init();
     }
 
@@ -83,6 +82,9 @@ export class MonacoEditorDirective {
             case "ts":
                 this._language = "typescript";
                 break;
+            case "xml":
+                this._language = "xml";
+                break;
             // Monaco does not have sh, php
             case "sh":
             case "php":
@@ -119,7 +121,7 @@ export class MonacoEditorDirective {
         var onGotAmdLoader = () => {
             // Load monaco
             if (window.location.hostname === "localhost") {
-                (<any>window).require.config({ paths: { 'vs': '/ng2app/assets/monaco/min/vs' } });
+                (<any>window).require.config({ paths: { 'vs': `/${this.appName}/assets/monaco/min/vs` } });
             } else {
                 (<any>window).require.config({ paths: { 'vs': '/assets/monaco/min/vs' } });
             }
@@ -177,7 +179,7 @@ export class MonacoEditorDirective {
         if (!(<any>window).require) {
             var loaderScript = document.createElement('script');
             loaderScript.type = 'text/javascript';
-            loaderScript.src = 'assets/monaco/vs/loader.js';
+            loaderScript.src = 'assets/monaco/min/vs/loader.js';
             loaderScript.addEventListener('load', onGotAmdLoader);
             document.body.appendChild(loaderScript);
         } else {

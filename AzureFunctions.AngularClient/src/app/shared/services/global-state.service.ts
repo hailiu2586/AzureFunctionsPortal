@@ -11,8 +11,14 @@ import {DashboardComponent} from '../../dashboard/dashboard.component';
 import {FunctionsService} from './functions.service';
 import {Observable, Subscription as RxSubscription, BehaviorSubject} from 'rxjs/Rx';
 
+export interface BusyStateService {
+    setBusyState(message?: string) : void;
+    clearBusyState(): void;
+}
+
+
 @Injectable()
-export class GlobalStateService {
+export class GlobalStateService implements BusyStateService {
     public _functionsService: FunctionsService;
     public showTryView: boolean;
     public isRunningLocal: boolean = false;

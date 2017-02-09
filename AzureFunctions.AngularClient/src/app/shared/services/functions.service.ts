@@ -27,8 +27,12 @@ import { VfsObject } from '../models/vfs-object';
 
 declare var mixpanel: any;
 
+export interface FunctionKeysService {
+    getJson(url: string) : Observable<FunctionKeys> 
+}
+
 @Injectable()
-export class FunctionsService {
+export class FunctionsService implements FunctionKeysService {
     private masterKey: string;
     private token: string;
     private scmUrl: string;
@@ -916,7 +920,7 @@ export class FunctionsService {
     }
 
     @Cache()
-    getJson(uri: string) {
+    getJson(uri: string) : Observable<FunctionKeys> {
         return this._http.get(uri, { headers: this.getMainSiteHeaders() })
             .map<FunctionKeys>(r => r.json());
     }

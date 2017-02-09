@@ -1,10 +1,13 @@
-import {Directive, EventEmitter, ElementRef, AfterViewInit, Inject } from '@angular/core';
+import {Directive, EventEmitter, ElementRef, AfterViewInit, Inject, OpaqueToken } from '@angular/core';
 import {MonacoModel} from '../models/monaco-model';
-import {GlobalStateService} from '../services/global-state.service';
-import {FunctionsService} from '../services/functions.service';
+import {BusyStateService} from '../services/global-state.service';
+import {FunctionKeysService} from '../services/functions.service';
 
 declare var monaco;
 declare var require;
+
+export const BUSY_STATE_SERVICE = new OpaqueToken('BusyStateService');
+export const FUNCTION_KEY_SERVICE = new OpaqueToken('FunctionKeysService');
 
 @Directive({
     selector: '[monacoEditor]',
@@ -25,8 +28,8 @@ export class MonacoEditorDirective {
 
     constructor(public elementRef: ElementRef,
         @Inject('appRootName') private appName: string,
-        private _globalStateService: GlobalStateService,
-        private _functionsService: FunctionsService) {
+        @Inject(BUSY_STATE_SERVICE) private _globalStateService: BusyStateService,
+        @Inject(FUNCTION_KEY_SERVICE) private _functionsService: FunctionKeysService) {
         this.onContentChanged = new EventEmitter<string>();
         this.onSave = new EventEmitter<string>();
         this.init();

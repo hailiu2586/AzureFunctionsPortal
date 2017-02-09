@@ -65,12 +65,10 @@ import { TableFunctionMonitorComponent } from './table-function-monitor/table-fu
 import { TryLandingComponent } from './try-landing/try-landing.component';
 import { AggregateBlockPipe } from './aggregate-block/aggregate-block.pipe';
 import { FunctionDesignerComponent } from './function-designer/function-designer.component';
-import { MonacoEditorDirective } from './shared/directives/monaco-editor.directive';
+import { MonacoEditorDirective, BUSY_STATE_SERVICE, FUNCTION_KEY_SERVICE } from './shared/directives/monaco-editor.directive';
 import { TableFunctionMonitorPipe } from './table-function-monitor/table-function-monitor.pipe';
 import { ApiDetailsComponent } from './api-details/api-details.component';
 import { ApiNewComponent } from './api-new/api-new.component';
-
-var appName = new OpaqueToken('appName');
 
 @NgModule({
   declarations: [
@@ -150,7 +148,9 @@ var appName = new OpaqueToken('appName');
       BackgroundTasksService,
       GlobalStateService,
       AiService,
-      { provide: 'appRootName', useValue: 'ng2app'}
+      { provide: 'appRootName', useValue: 'ng2app' },
+      { provide: BUSY_STATE_SERVICE, useClass: GlobalStateService },
+      { provide: FUNCTION_KEY_SERVICE, useClass: FunctionsService }
   ],
   bootstrap: [AppComponent]
 })

@@ -88,7 +88,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to API proxies are currently disabled. To enable, visit.
+        ///   Looks up a localized string similar to Azure Functions Proxies are currently disabled. To enable, visit.
         /// </summary>
         internal static string apiProxies_warningOff {
             get {
@@ -142,7 +142,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to API proxy or function with that name already exsists..
+        ///   Looks up a localized string similar to Proxy or function with that name already exists..
         /// </summary>
         internal static string apiProxy_errorExists {
             get {
@@ -223,7 +223,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to API proxies (preview).
+        ///   Looks up a localized string similar to Proxies (preview).
         /// </summary>
         internal static string appFunctionSettings_apiProxies {
             get {
@@ -556,7 +556,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use API proxies.
+        ///   Looks up a localized string similar to Enable Azure Functions Proxies (preview).
         /// </summary>
         internal static string appFunctionSettings_useApiProxies {
             get {
@@ -615,6 +615,159 @@ namespace AzureFunctions.ResourcesPortal {
         internal static string azureFunctions {
             get {
                 return ResourceManager.GetString("azureFunctions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to access your Azure settings for your function app..
+        /// </summary>
+        internal static string backend_error_CannotAccessFunctionApp {
+            get {
+                return ResourceManager.GetString("backend_error_CannotAccessFunctionApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First make sure you have proper access to the Azure resource {0}. If you dotTry refreshing the portal to renew your authentication token..
+        /// </summary>
+        internal static string backend_error_CannotAccessFunctionApp_action {
+            get {
+                return ResourceManager.GetString("backend_error_CannotAccessFunctionApp_action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check the storage account connection string in application settings as it appears to be invalid..
+        /// </summary>
+        internal static string backend_error_InvalidStorageConnectionString {
+            get {
+                return ResourceManager.GetString("backend_error_InvalidStorageConnectionString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update the app setting with a valid storage connection string..
+        /// </summary>
+        internal static string backend_error_InvalidStorageConnectionString_action {
+            get {
+                return ResourceManager.GetString("backend_error_InvalidStorageConnectionString_action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; application setting is missing from your app. This setting contains a connection string for an Azure Storage account that is used to host your functions content. Your app will be completely broken without this setting. You may need to delete and recreate this function app if you no longer have access to the value of that application setting..
+        /// </summary>
+        internal static string backend_error_MissingAzureFilesConnectionString {
+            get {
+                return ResourceManager.GetString("backend_error_MissingAzureFilesConnectionString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; application setting is missing from your app. This setting contains a share name where your function content lives. Your app will be completely broken without this setting. You may need to delete and recreate this function app if you no longer have access to the value of that application setting..
+        /// </summary>
+        internal static string backend_error_MissingAzureFilesContentShare {
+            get {
+                return ResourceManager.GetString("backend_error_MissingAzureFilesContentShare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; application setting is missing from your app. This setting contains a connection string for an Azure Storage account that is needed for the monitoring view of your functions. This is where invocation data is aggregated and then displayed in monitoring view. Your monitoring view might be broken..
+        /// </summary>
+        internal static string backend_error_MissingAzureWebJobsDashboardAppSetting {
+            get {
+                return ResourceManager.GetString("backend_error_MissingAzureWebJobsDashboardAppSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; application setting is missing from your app. This setting contains a connection string for an Azure Storage account that is needed for the functions runtime to handle multiple instances synchronization, log invocation results, and other infrastructure jobs. Your function app will not work correctly without that setting..
+        /// </summary>
+        internal static string backend_error_MissingAzureWebJobsStorageAppSetting {
+            get {
+                return ResourceManager.GetString("backend_error_MissingAzureWebJobsStorageAppSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create the app setting with a valid storage connection string..
+        /// </summary>
+        internal static string backend_error_MissingAzureWebJobsStorageAppSetting_action {
+            get {
+                return ResourceManager.GetString("backend_error_MissingAzureWebJobsStorageAppSetting_action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; application setting is missing from your app. Without this setting you&apos;ll always be running the latest version of the runtime even across major version updates which might contain breaking changes. It&apos;s advised to set that value to the current latest major version (~1) and you&apos;ll get notified with newer versions for update..
+        /// </summary>
+        internal static string backend_error_MissingFunctionsExtensionVersionAppSetting {
+            get {
+                return ResourceManager.GetString("backend_error_MissingFunctionsExtensionVersionAppSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Azure Storage Account connection string stored in &apos;{0}&apos; is null or empty. This is required to have your function app working..
+        /// </summary>
+        internal static string backend_error_StorageAccountConnectionStringIsNullOrEmpty {
+            get {
+                return ResourceManager.GetString("backend_error_StorageAccountConnectionStringIsNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update the app setting with a valid storage connection string..
+        /// </summary>
+        internal static string backend_error_StorageAccountConnectionStringIsNullOrEmpty_action {
+            get {
+                return ResourceManager.GetString("backend_error_StorageAccountConnectionStringIsNullOrEmpty_action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Storage account {0} doesn&apos;t exist. Deleting the storage account the function app is using will cause the function app to stop working. .
+        /// </summary>
+        internal static string backend_error_StorageAccountDoesNotExist {
+            get {
+                return ResourceManager.GetString("backend_error_StorageAccountDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update the app setting with a valid existing storage connection string..
+        /// </summary>
+        internal static string backend_error_StorageAccountDoesNotExist_action {
+            get {
+                return ResourceManager.GetString("backend_error_StorageAccountDoesNotExist_action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Storage account {0} doesn&apos;t support Azure Queues Storage. Functions runtime require queues to work properly. You&apos;ll have to delete and recreate your function app with a storage account that supports Azure Queues Storage..
+        /// </summary>
+        internal static string backend_error_StorageAccountDoesntSupportQueues {
+            get {
+                return ResourceManager.GetString("backend_error_StorageAccountDoesntSupportQueues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There seem to be a problem querying Azure backend for your function app..
+        /// </summary>
+        internal static string backend_error_UnexpectedArmError {
+            get {
+                return ResourceManager.GetString("backend_error_UnexpectedArmError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There seem to be a problem querying Azure backend for your function app..
+        /// </summary>
+        internal static string backend_error_UnknownErrorWhileCallingArm {
+            get {
+                return ResourceManager.GetString("backend_error_UnknownErrorWhileCallingArm", resourceCulture);
             }
         }
         
@@ -925,6 +1078,15 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The application is offline. Please check your internet connection..
+        /// </summary>
+        internal static string error_appOffline {
+            get {
+                return ResourceManager.GetString("error_appOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CORS is not configured for this function app. Please add {{origin}} to your CORS list..
         /// </summary>
         internal static string error_CORSNotConfigured {
@@ -952,11 +1114,38 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The function runtime is unable to start. Please check the runtime logs for any errors or try again later..
+        /// </summary>
+        internal static string error_functionRuntimeIsUnableToStart {
+            get {
+                return ResourceManager.GetString("error_functionRuntimeIsUnableToStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You don&apos;t have sufficient permissions to access this function app. You may still be able to see basic settings in the app service settings blade which you can access from the function app settings link on the left sidebar..
         /// </summary>
         internal static string error_NoPermissionToAccessApp {
             get {
                 return ResourceManager.GetString("error_NoPermissionToAccessApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to retrieve the list of functions for this function app..
+        /// </summary>
+        internal static string error_parsingFunctionListReturenedFromKudu {
+            get {
+                return ResourceManager.GetString("error_parsingFunctionListReturenedFromKudu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the problem persists, contact support with the following code {{code}}.
+        /// </summary>
+        internal static string error_shareCodeWithSupport {
+            get {
+                return ResourceManager.GetString("error_shareCodeWithSupport", resourceCulture);
             }
         }
         
@@ -970,20 +1159,173 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We are not able to create function {{functionName}}. Please try again later..
+        /// </summary>
+        internal static string error_unableToCreateFunction {
+            get {
+                return ResourceManager.GetString("error_unableToCreateFunction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to create or update the key {{keyName}} for function {{functionName}}. This can happen if the runtime is not able to load your function. Check other function errors..
+        /// </summary>
+        internal static string error_unableToCreateFunctionKey {
+            get {
+                return ResourceManager.GetString("error_unableToCreateFunctionKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are unable to decrypt your function access keys. This can happen if you delete and recreate the app with the same name, or if you copied your keys from a different function app. You can try following steps here to fix the issue Follow steps here https://go.microsoft.com/fwlink/?linkid=844094.
+        /// </summary>
+        internal static string error_unableToDecryptKeys {
+            get {
+                return ResourceManager.GetString("error_unableToDecryptKeys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to delete the file {{fileName}}. Please try again later..
+        /// </summary>
+        internal static string error_unableToDeleteFileThroughKudu {
+            get {
+                return ResourceManager.GetString("error_unableToDeleteFileThroughKudu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to delete function {{functionName}}. Please try again later..
+        /// </summary>
+        internal static string error_unableToDeleteFunction {
+            get {
+                return ResourceManager.GetString("error_unableToDeleteFunction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to delete the key {{keyName}} for function {{functionName}}. This can happen if the runtime is not able to load your function. Check other function errors..
+        /// </summary>
+        internal static string error_unableToDeleteFunctionKey {
+            get {
+                return ResourceManager.GetString("error_unableToDeleteFunctionKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to get the content for {{fileName}}. Please try again later..
+        /// </summary>
+        internal static string error_unableToGetFileContentFromKudu {
+            get {
+                return ResourceManager.GetString("error_unableToGetFileContentFromKudu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to renew the key {{keyName}} for function {{functionName}}. This can happen if the runtime is not able to load your function. Check other function errors..
+        /// </summary>
+        internal static string error_unableToRenewFunctionKey {
+            get {
+                return ResourceManager.GetString("error_unableToRenewFunctionKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to retrieve directory content for your function. Please try again later..
+        /// </summary>
+        internal static string error_unableToRetrieveDirectoryContent {
+            get {
+                return ResourceManager.GetString("error_unableToRetrieveDirectoryContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are unable to get function {{functionName}}. Please try again later..
+        /// </summary>
+        internal static string error_unableToRetrieveFunction {
+            get {
+                return ResourceManager.GetString("error_unableToRetrieveFunction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to retrieve Function App ({{functionApp}}).
         /// </summary>
-        internal static string error_UnableToRetriveFunctionApp {
+        internal static string error_UnableToRetrieveFunctionApp {
             get {
-                return ResourceManager.GetString("error_UnableToRetriveFunctionApp", resourceCulture);
+                return ResourceManager.GetString("error_UnableToRetrieveFunctionApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to retrieve the keys for function {{functionName}}. This can happen if the runtime is not able to load your function. Check other function errors..
+        /// </summary>
+        internal static string error_unableToRetrieveFunctionKeys {
+            get {
+                return ResourceManager.GetString("error_unableToRetrieveFunctionKeys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to retrieve your functions right now. Please try again later..
+        /// </summary>
+        internal static string error_unableToRetrieveFunctionListFromKudu {
+            get {
+                return ResourceManager.GetString("error_unableToRetrieveFunctionListFromKudu", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to We are unable to reach your function app ({{statusText}}). Please try again later..
         /// </summary>
-        internal static string error_UnableToRetriveFunctions {
+        internal static string error_UnableToRetrieveFunctions {
             get {
-                return ResourceManager.GetString("error_UnableToRetriveFunctions", resourceCulture);
+                return ResourceManager.GetString("error_UnableToRetrieveFunctions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are unable to retrieve the runtime config. Please try again later..
+        /// </summary>
+        internal static string error_unableToRetrieveRuntimeConfig {
+            get {
+                return ResourceManager.GetString("error_unableToRetrieveRuntimeConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to retrieve the runtime master key. Please try again later..
+        /// </summary>
+        internal static string error_unableToRetrieveRuntimeKey {
+            get {
+                return ResourceManager.GetString("error_unableToRetrieveRuntimeKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to retrieve secrets file for {{functionName}}. Please try again later..
+        /// </summary>
+        internal static string error_UnableToRetrieveSecretsFileFromKudu {
+            get {
+                return ResourceManager.GetString("error_UnableToRetrieveSecretsFileFromKudu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to save the content for {{fileName}}. Please try again later..
+        /// </summary>
+        internal static string error_unableToSaveFileContentThroughKudu {
+            get {
+                return ResourceManager.GetString("error_unableToSaveFileContentThroughKudu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are not able to update function {{functionName}}. Please try again later..
+        /// </summary>
+        internal static string error_unableToUpdateFunction {
+            get {
+                return ResourceManager.GetString("error_unableToUpdateFunction", resourceCulture);
             }
         }
         
@@ -1141,7 +1483,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Function App will be stopped when reaching daily usage until the next 24 hours timeframe..
+        ///   Looks up a localized string similar to The Function App will be stopped when reaching daily usage until the next 24 hours time frame..
         /// </summary>
         internal static string functionAppSettings_quotaInfo {
             get {
@@ -1150,7 +1492,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Function App has reached daily usage quota and has been stopped until the next 24 hours timeframe..
+        ///   Looks up a localized string similar to The Function App has reached daily usage quota and has been stopped until the next 24 hours time frame..
         /// </summary>
         internal static string functionAppSettings_quotaWarning {
             get {
@@ -1222,7 +1564,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Function Url:.
+        ///   Looks up a localized string similar to Function Url.
         /// </summary>
         internal static string functionDev_functionUrl {
             get {
@@ -1231,7 +1573,25 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GitHub Secret:.
+        ///   Looks up a localized string similar to &lt;/&gt; Get function URL.
+        /// </summary>
+        internal static string functionDev_gerFunctionUrl {
+            get {
+                return ResourceManager.GetString("functionDev_gerFunctionUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;/&gt; Get GitHub secret.
+        /// </summary>
+        internal static string functionDev_gerGithubSecret {
+            get {
+                return ResourceManager.GetString("functionDev_gerGithubSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GitHub Secret.
         /// </summary>
         internal static string functionDev_githubSelect {
             get {
@@ -1312,7 +1672,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View Files.
+        ///   Looks up a localized string similar to View files.
         /// </summary>
         internal static string functionDev_viewFiles {
             get {
@@ -1510,7 +1870,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recent errors count.
+        ///   Looks up a localized string similar to Error count since.
         /// </summary>
         internal static string functionMonitor_errorsAggregate {
             get {
@@ -1564,7 +1924,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recent success count.
+        ///   Looks up a localized string similar to Success count since.
         /// </summary>
         internal static string functionMonitor_successAggregate {
             get {
@@ -1870,11 +2230,29 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Headers.
+        /// </summary>
+        internal static string httpRun_headers {
+            get {
+                return ResourceManager.GetString("httpRun_headers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP method.
         /// </summary>
         internal static string httpRun_httpMethod {
             get {
                 return ResourceManager.GetString("httpRun_httpMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no headers.
+        /// </summary>
+        internal static string httpRun_noHeaders {
+            get {
+                return ResourceManager.GetString("httpRun_noHeaders", resourceCulture);
             }
         }
         
@@ -1969,16 +2347,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The faster way to functions.
-        /// </summary>
-        internal static string intro_fasterWay {
-            get {
-                return ResourceManager.GetString("intro_fasterWay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Get started quickly with a premade function.
+        ///   Looks up a localized string similar to Welcome to Azure Functions! Get started quickly with a premade function..
         /// </summary>
         internal static string intro_getStarted {
             get {
@@ -2068,15 +2437,6 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Write any function in minutes - whether to run a simple job that cleans up a database or to build a more complex architecture. Creating functions is easier than ever before, whatever your chosen OS, platform, or development method. No install required..
-        /// </summary>
-        internal static string intro_writeAny {
-            get {
-                return ResourceManager.GetString("intro_writeAny", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Keys.
         /// </summary>
         internal static string keys {
@@ -2095,6 +2455,15 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Collapse.
+        /// </summary>
+        internal static string logStreaming_compress {
+            get {
+                return ResourceManager.GetString("logStreaming_compress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copied!.
         /// </summary>
         internal static string logStreaming_copied {
@@ -2104,11 +2473,20 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copy Logs.
+        ///   Looks up a localized string similar to Copy logs.
         /// </summary>
         internal static string logStreaming_copyLogs {
             get {
                 return ResourceManager.GetString("logStreaming_copyLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expand.
+        /// </summary>
+        internal static string logStreaming_expand {
+            get {
+                return ResourceManager.GetString("logStreaming_expand", resourceCulture);
             }
         }
         
@@ -2311,7 +2689,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changes made to API proxy {{name}} will be lost. Are you sure you want to continue?.
+        ///   Looks up a localized string similar to Changes made to proxy {{name}} will be lost. Are you sure you want to continue?.
         /// </summary>
         internal static string sideBar_changeMadeApiProxy {
             get {
@@ -2329,7 +2707,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New API Proxy.
+        ///   Looks up a localized string similar to New proxy.
         /// </summary>
         internal static string sidebar_newApiProxy {
             get {
@@ -2482,7 +2860,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Always On&quot; setting is set to off.
+        ///   Looks up a localized string similar to &apos;AlwaysOn&apos; is not enabled. Your app may not function properly.
         /// </summary>
         internal static string topBar_alwaysOn {
             get {
@@ -2734,7 +3112,7 @@ namespace AzureFunctions.ResourcesPortal {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;span&gt;Create a brand-new function&lt;/span&gt; - Get started with one of the prebuilt function templates.
+        ///   Looks up a localized string similar to &lt;span&gt;Create a brand-new function&lt;/span&gt; - Get started with one of the pre-built function templates.
         /// </summary>
         internal static string tutorial_createNew {
             get {

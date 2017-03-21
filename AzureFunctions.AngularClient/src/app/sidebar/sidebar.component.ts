@@ -27,15 +27,15 @@ enum TopbarButton {
   selector: 'sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
-  inputs: ['functionsInfo', 'tabId'],  
+  inputs: ['functionsInfo', 'tabId'],
 })
 export class SidebarComponent implements OnDestroy, OnInit {
-    @Input() apiProxies: ApiProxy[]; 
+    @Input() apiProxies: ApiProxy[];
     public functionsInfo: FunctionInfo[];
     public selectedFunction: FunctionInfo;
     public selectedApiProxy: ApiProxy;
     public inIFrame: boolean;
-    private showTryView: boolean;
+    public showTryView: boolean;
     public pullForStatus = false;
     public running: boolean;
     public dots = "";
@@ -44,14 +44,13 @@ export class SidebarComponent implements OnDestroy, OnInit {
 
     @Output() private appSettingsClicked: EventEmitter<any> = new EventEmitter<any>();
     @Output() private quickstartClicked: EventEmitter<any> = new EventEmitter<any>();
-    @Output() private apiSettingsClicked: EventEmitter<any> = new EventEmitter<any>(); 
-    @Output() private newApiProxyClicked: EventEmitter<any> = new EventEmitter<any>(); 
+    @Output() private apiSettingsClicked: EventEmitter<any> = new EventEmitter<any>();
+    @Output() private newApiProxyClicked: EventEmitter<any> = new EventEmitter<any>();
     @Output() refreshClicked = new EventEmitter<void>();
     @Output() changedTab = new EventEmitter<string>();
     private subscriptions: Subscription[];
     private _tabId: string = 'Develop';
     private _currentViewName: string;
-    private showDevelop: boolean = false;
     private interval: number;
 
     constructor(private _functionsService: FunctionsService,
@@ -62,6 +61,7 @@ export class SidebarComponent implements OnDestroy, OnInit {
         private _portalService: PortalService,
         private _aiService: AiService) {
 
+        this.showTryView = this._globalStateService.showTryView;
         this.subscriptions = [];
         this.inIFrame = this._userService.inIFrame;
         this.showTryView = this._globalStateService.showTryView;
@@ -141,21 +141,6 @@ export class SidebarComponent implements OnDestroy, OnInit {
             this.selectFunction(selectedFi);
         }
 
-        document.addEventListener('keydown', (e: KeyboardEvent) => {
-            if (!e.ctrlKey || !e.altKey || this.showDevelop) return;
-            if (!this.interval) {
-                this.interval = window.setInterval(() => {
-                    this.showDevelop = true;
-                }, 900);
-            }
-        });
-
-        document.addEventListener('keyup', (e: KeyboardEvent) => {
-            if (this.interval) {
-                clearInterval(this.interval);
-            }
-        });
-
         this._globalStateService.enabledApiProxy.subscribe((value) => {
             this.apiProxyEnabled = value;
         });
@@ -234,10 +219,6 @@ export class SidebarComponent implements OnDestroy, OnInit {
             this.trackPage('quickStart');
             this.tabId = 'Develop';
         }
-    }
-
-    developLocally() {
-        this._globalStateService.showLocalDevelopInstructions();
     }
 
     private trackPage(pageName: string) {

@@ -1,4 +1,6 @@
 ﻿using AzureFunctions.Contracts;
+using AzureFunctions.Models;
+using System;
 using System.Configuration;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -9,6 +11,17 @@ namespace AzureFunctions.Code
 {
     public class Settings : ISettings
     {
+        private ClientConfiguration _clientConfig = null;
+
+        public Settings()
+        {
+            _clientConfig = new ClientConfiguration()
+            {
+                RuntimeType = this.RuntimeType.ToString(),
+                AzureResourceManagerEndpoint = this.AzureResourceManagerEndpoint
+            };
+        }
+
         private static string config(string @default = null, [CallerMemberName] string key = null)
         {
             var value = System.Environment.GetEnvironmentVariable(key) ?? ConfigurationManager.AppSettings[key];
@@ -30,6 +43,11 @@ namespace AzureFunctions.Code
             return string.Empty;
         }
 
+        public ClientConfiguration GetClientConfiguration()
+        {
+            return _clientConfig;
+        }
+
         public string AppDataPath => Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "App_Data");
         public string TemplatesPath => Path.Combine(AppDataPath, "Templates");
         public string ResourcesPortalPath => Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "ResourcesPortal");
@@ -43,5 +61,10 @@ namespace AzureFunctions.Code
 
         public bool LogLoggingDebugInfo => bool.Parse(config(false.ToString()));
 
+        public string AzureResourceManagerEndpoint => config();
+
+        public string ManagementResource => config();
+
+        public RuntimeType RuntimeType => (RuntimeType)Enum.Parse(typeof(RuntimeType), config());
     }
 }

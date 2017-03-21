@@ -17,6 +17,7 @@ IF %ERRORLEVEL% NEQ 0 (
 
 :: Setup
 :: -----
+:: Setup npm global path to d:\home
 
 echo Print variables
 echo dp0=%~dp0%
@@ -63,6 +64,13 @@ IF NOT DEFINED NEXT_CLIENT_MANIFEST_PATH (
   IF NOT EXIST "%PREVIOUS_CLIENT_MANIFEST_PATH%" (MKDIR "%PREVIOUS_CLIENT_MANIFEST_PATH%")
 )
 
+IF NOT EXIST "%HOME%\tools" (MKDIR "%HOME%\tools")
+
+SET PATH=%PATH%;%HOME%\tools
+
+call npm config set prefix "%HOME%\tools"
+IF !ERRORLEVEL! NEQ 0 goto error
+
 IF NOT DEFINED KUDU_SYNC_CMD (
   :: Install kudu sync
   echo Installing Kudu Sync
@@ -76,7 +84,7 @@ IF NOT DEFINED KUDU_SYNC_CMD (
 IF NOT DEFINED ANGUALR_CLI (
   :: Install angular-cli
   echo Installing angular-cli
-  call npm install -g angular-cli
+  call npm install -g angular-cli@1.0.0-beta.19-3
   
   IF !ERRORLEVEL! NEQ 0 goto error
   
@@ -163,12 +171,18 @@ IF EXIST "%DEPLOYMENT_SOURCE%\AzureFunctions.AngularClient\package.json" (
 		IF !ERRORLEVEL! NEQ 0 goto error
 	)
 	echo Bundle angular2 app
-	call :ExecuteCmd ng build --environment=prod --output-path="%ARTIFACTS%\AzureFunctions.AngularClient\dist"
+	call :ExecuteCmd ng build --prod --environment=prod --output-path="%ARTIFACTS%\AzureFunctions.AngularClient\dist"
 	IF !ERRORLEVEL! NEQ 0 (
-		call :ExecuteCmd ng build --environment=prod --output-path="%ARTIFACTS%\AzureFunctions.AngularClient\dist"
+		call :ExecuteCmd ng build --prod --environment=prod --output-path="%ARTIFACTS%\AzureFunctions.AngularClient\dist"
 		IF !ERRORLEVEL! NEQ 0 goto error
 	)
-  
+	
+	pushd "%ARTIFACTS%\AzureFunctions.AngularClient\dist"
+		mv main.*.bundle.js main.bundle.js
+		mv scripts.*.bundle.js scripts.bundle.js
+		mv styles.*.bundle.js styles.bundle.js
+	popd
+	
 	each Copy angular output to the temporary path
 	IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
 		echo ROBOCOPY "%ARTIFACTS%\AzureFunctions.AngularClient\dist" "%DEPLOYMENT_TEMP%" /E /IS

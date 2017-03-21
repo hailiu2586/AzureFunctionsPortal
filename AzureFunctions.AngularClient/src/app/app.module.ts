@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
@@ -7,6 +7,7 @@ import {TranslateModule} from 'ng2-translate';
 import { nvD3 } from 'ng2-nvd3';
 import {FileSelectDirective, FileDropDirective, FileUploader} from 'ng2-file-upload/ng2-file-upload';
 
+import {ConfigService} from './shared/services/config.service';
 import {FunctionsService} from './shared/services/functions.service';
 import {UserService} from './shared/services/user.service';
 import {PortalService} from './shared/services/portal.service';
@@ -23,7 +24,6 @@ import {AiService} from './shared/services/ai.service';
 import { AppComponent } from './app.component';
 import { GettingStartedComponent } from './getting-started/getting-started.component';
 import { BusyStateComponent } from './busy-state/busy-state.component';
-import { LocalDevelopmentInstructionsComponent } from './local-development-instructions/local-development-instructions.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TryNowBusyStateComponent } from './try-now-busy-state/try-now-busy-state.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
@@ -69,17 +69,17 @@ import { MonacoEditorDirective, BUSY_STATE_SERVICE, FUNCTION_KEY_SERVICE } from 
 import { TableFunctionMonitorPipe } from './table-function-monitor/table-function-monitor.pipe';
 import { ApiDetailsComponent } from './api-details/api-details.component';
 import { ApiNewComponent } from './api-new/api-new.component';
+import { FunctionsHttpService } from './shared/services/functions-http.service';
 
 @NgModule({
   declarations: [
       AppComponent,
       nvD3,
       FileSelectDirective,
-      FileDropDirective,      
+      FileDropDirective,
 
       GettingStartedComponent,
       BusyStateComponent,
-      LocalDevelopmentInstructionsComponent,
       DashboardComponent,
       TryNowBusyStateComponent,
       TopBarComponent,
@@ -136,6 +136,13 @@ import { ApiNewComponent } from './api-new/api-new.component';
       TranslateModule.forRoot()
   ],
   providers: [
+      ConfigService,
+      {
+          provide: APP_INITIALIZER,
+          useFactory: (config: ConfigService) => () => config.loadConfig(),
+          deps: [ConfigService],
+          multi: true
+      },
       FunctionsService,
       UserService,
       PortalService,
@@ -148,6 +155,7 @@ import { ApiNewComponent } from './api-new/api-new.component';
       BackgroundTasksService,
       GlobalStateService,
       AiService,
+      FunctionsHttpService,
       { provide: 'appRootName', useValue: 'ng2app' },
       { provide: BUSY_STATE_SERVICE, useClass: GlobalStateService },
       { provide: FUNCTION_KEY_SERVICE, useClass: FunctionsService }

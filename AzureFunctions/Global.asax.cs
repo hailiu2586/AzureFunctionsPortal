@@ -1,30 +1,28 @@
-﻿using Autofac;
-using Autofac.Integration.WebApi;
-using AzureFunctions.Authentication;
-using AzureFunctions.Code;
-using AzureFunctions.Common;
-using AzureFunctions.Contracts;
-using AzureFunctions.Trace;
-using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.MSSqlServer;
-using SerilogWeb.Classic.Enrichers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
-using System.Web.Routing;
-using Microsoft.ApplicationInsights.Extensibility;
 using System.Web.Http.ExceptionHandling;
+using System.Web.Routing;
+using Autofac;
+using Autofac.Integration.WebApi;
+using AzureFunctions.Authentication;
+using AzureFunctions.Code;
+using AzureFunctions.Contracts;
+using AzureFunctions.Trace;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.MSSqlServer;
+using SerilogWeb.Classic.Enrichers;
 
 namespace AzureFunctions
 {
@@ -70,6 +68,23 @@ namespace AzureFunctions
         {
             var context = new HttpContextWrapper(HttpContext.Current);
 
+            if (context.Request.Url.AbsolutePath.Equals("/api/health", StringComparison.OrdinalIgnoreCase))
+            {
+                context.Response.WriteFile(HostingEnvironment.MapPath("~/health.html"));
+                context.Response.StatusCode = 200;
+                context.Response.Flush();
+                context.Response.End();
+                return;
+            }
+            else if (context.Request.Url.AbsolutePath.Equals("/api/ping", StringComparison.OrdinalIgnoreCase))
+            {
+                context.Response.Write("success");
+                context.Response.StatusCode = 200;
+                context.Response.Flush();
+                context.Response.End();
+                return;
+            }
+
             var isFile = FileSystemHelpers.FileExists(HostingEnvironment.MapPath($"~{context.Request.Url.AbsolutePath.Replace('/', '\\')}"));
             var route = RouteTable.Routes.GetRouteData(context);
             // If the route is not registerd in the WebAPI RouteTable
@@ -88,12 +103,6 @@ namespace AzureFunctions
                 {
                     context.Response.Headers["LoginUrl"] = SecurityManager.GetLoginUrl(context);
                     context.Response.StatusCode = 403; // Forbidden
-                }
-                else if (context.Request.Url.AbsolutePath.Equals("/api/health", StringComparison.OrdinalIgnoreCase))
-                {
-                    context.Response.WriteFile(HostingEnvironment.MapPath("~/health.html"));
-                    context.Response.Flush();
-                    context.Response.End();
                 }
                 else if (!isFile && !context.Request.RawUrl.StartsWith("/api/"))
                 {
@@ -191,22 +200,25 @@ namespace AzureFunctions
                 .As<ISettings>()
                 .SingleInstance();
 
-            builder.Register(c =>
-            {
-                var userSettings = c.Resolve<IUserSettings>();
-                var client = new HttpClient();
+            builder.RegisterType<HttpClient>()
+                .As<HttpClient>()
+                .SingleInstance();
 
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userSettings.BearerToken);
-                client.DefaultRequestHeaders.Add("User-Agent", Constants.UserAgent);
-                client.DefaultRequestHeaders.Add("Accept", Constants.ApplicationJson);
-                return client;
-            })
-            .As<HttpClient>()
-            .InstancePerRequest();
+            builder.RegisterType<ArmClient>()
+                .As<IArmClient>()
+                .InstancePerRequest();
 
             builder.RegisterType<TemplatesManager>()
                 .As<ITemplatesManager>()
                 .SingleInstance();
+
+            builder.RegisterType<DiagnosticsManager>()
+                .As<IDiagnosticsManager>()
+                .InstancePerRequest();
+
+            builder.RegisterType<TelemetryClient>()
+                .As<TelemetryClient>()
+                .InstancePerRequest();
         }
 
         private void RegisterRoutes(HttpConfiguration config)
@@ -222,6 +234,10 @@ namespace AzureFunctions
             config.Routes.MapHttpRoute("get-resources", "api/resources", new { controller = "AzureFunctions", action = "GetResources", authenticated = false}, new { verb = new HttpMethodConstraint(HttpMethod.Get.ToString()) });
             config.Routes.MapHttpRoute("get-latest-runtime", "api/latestruntime", new { controller = "AzureFunctions", action = "GetLatestRuntime", authenticated = false }, new { verb = new HttpMethodConstraint(HttpMethod.Get.ToString()) });
             config.Routes.MapHttpRoute("get-latest-routing", "api/latestrouting", new { controller = "AzureFunctions", action = "GetLatestRoutingExtensionVersion", authenticated = false }, new { verb = new HttpMethodConstraint(HttpMethod.Get.ToString()) });
+
+            config.Routes.MapHttpRoute("get-config", "api/config", new { controller = "AzureFunctions", action = "GetClientConfiguration", authenticated = false }, new { verb = new HttpMethodConstraint(HttpMethod.Get.ToString()) });
+
+            config.Routes.MapHttpRoute("diagnose-app", "api/diagnose/{*armId}", new { controller = "AzureFunctions", action = "Diagnose", authenticated = false }, new { verb = new HttpMethodConstraint(HttpMethod.Post.ToString()) });
         }
     }
 }

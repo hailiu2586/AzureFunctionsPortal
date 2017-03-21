@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AzureFunctions.Code;
+using AzureFunctions.Contracts;
+using System;
 using System.Net.Http;
 using System.Web;
 
@@ -6,18 +8,20 @@ namespace AzureFunctions.Authentication
 {
     public static class SecurityManager
     {
+        private static readonly ISettings _settings;
         private static readonly IAuthProvider _frontEndAuthProvider;
         private static readonly IAuthProvider _localhostAuthProvider;
 
         static SecurityManager()
         {
-            _frontEndAuthProvider = new FrontEndAuthProvider();
-            _localhostAuthProvider = new LocalhostAuthProvider();
+            _settings = new Settings();
+            _frontEndAuthProvider = new FrontEndAuthProvider(_settings);
+            _localhostAuthProvider = new LocalhostAuthProvider(_settings);
         }
 
         private static IAuthProvider GetAuthProvider(HttpContextBase context)
         {
-            return context.Request.Url.IsLoopback
+            return context.Request.Url.IsLoopback || _settings.RuntimeType == RuntimeType.OnPrem
                 ? _localhostAuthProvider
                 : _frontEndAuthProvider;
         }

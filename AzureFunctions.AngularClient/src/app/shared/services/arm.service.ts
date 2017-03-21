@@ -12,20 +12,25 @@ import {ClearCache} from '../decorators/cache.decorator';
 import {AiService} from './ai.service';
 import {TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
 import {PortalResources} from '../models/portal-resources';
+import {ConfigService} from './config.service';
 
 @Injectable()
 export class ArmService {
     private token: string;
-    private armUrl = 'https://management.azure.com';
+    private armUrl = '';
     private armApiVersion = '2014-04-01'
     private armLocksApiVersion = '2015-01-01';
     private storageApiVersion = '2015-05-01-preview';
     private websiteApiVersion = '2015-08-01';
 
     constructor(private _http: Http,
+        private _configService: ConfigService,
         private _userService: UserService,
         private _aiService: AiService,
         private _translateService: TranslateService) {
+
+        this.armUrl = this._configService.getAzureResourceManagerEndpoint();
+
         //Cant Get Angular to accept GlobalStateService as input param
         if (!window.location.pathname.endsWith('/try')) {
             _userService.getToken().subscribe(t => this.token = t);
@@ -72,8 +77,9 @@ export class ArmService {
             .map<PublishingCredentials>(r => r.json());
     }
 
-    getFunctionContainerAppSettings(functionContainer: FunctionContainer) {
-        var url = `${this.armUrl}${functionContainer.id}/config/appsettings/list?api-version=${this.websiteApiVersion}`;
+    getFunctionContainerAppSettings(functionContainer: FunctionContainer | string) {
+        let armId = typeof functionContainer === 'string' ? functionContainer : functionContainer.id;
+        let url = `${this.armUrl}${armId}/config/appsettings/list?api-version=${this.websiteApiVersion}`;
         return this._http.post(url, '', { headers: this.getHeaders() })
             .map<{ [key: string]: string }>(r => r.json().properties);
     }
@@ -107,8 +113,9 @@ export class ArmService {
             .map<{ [key: string]: string }>(r => r.json().properties);
     }
 
-    getAuthSettings(functionContainer: FunctionContainer) {
-        let url = `${this.armUrl}${functionContainer.id}/config/authsettings/list?api-version=${this.websiteApiVersion}`;
+    getAuthSettings(functionContainer: FunctionContainer | string) {
+        let armId = typeof functionContainer === 'string' ? functionContainer : functionContainer.id;
+        let url = `${this.armUrl}${armId}/config/authsettings/list?api-version=${this.websiteApiVersion}`;
         return this._http.post(url, '', { headers: this.getHeaders() })
             .map<{ [key: string]: any }>(r => r.json().properties);
     }

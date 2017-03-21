@@ -8,7 +8,6 @@ namespace AzureFunctions.Common
     {
         public const string SubscriptionTemplate = "{0}/subscriptions/{1}?api-version={2}";
         public const string CSMApiVersion = "2014-04-01";
-        public const string CSMUrl = "https://management.azure.com";
         public const string X_MS_OAUTH_TOKEN = "X-MS-OAUTH-TOKEN";
         public const string PortalTokenHeader = "portal-token";
         public const string ApplicationJson = "application/json";
@@ -23,6 +22,7 @@ namespace AzureFunctions.Common
         public const string AnonymousUserName = "Anonymous";
         public const string PortalReferrer = "portal.azure.com";
         public const string PortalAnonymousUser = "Portal/1.0.0";
+        public const string CurrentLatestRuntimeVersion = "~1";
 
         private static object _lock = new object();
         private static string _currentCommitId;

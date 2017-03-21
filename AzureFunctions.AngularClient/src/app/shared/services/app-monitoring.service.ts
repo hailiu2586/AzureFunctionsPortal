@@ -1,10 +1,11 @@
-import {Http, Headers} from '@angular/http';
+import {Http, Headers, Response} from '@angular/http';
 import {Injectable} from '@angular/core';
 import {PortalService} from './portal.service';
 import {UserService} from './user.service';
 import {FunctionsService} from '../services/functions.service';
 import {GlobalStateService} from '../services/global-state.service';
 import {UsageVolume} from '../models/app-monitoring-usage'
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class MonitoringService {
@@ -35,10 +36,10 @@ export class MonitoringService {
         return headers;
     }
 
-    getAppConsumptionData(startTimeUTC: string, endTimeUTC: string, numberBuckets: number) {
+    getAppConsumptionData(startTimeUTC: string, endTimeUTC: string, numberBuckets: number) : Observable<UsageVolume> {
         var url = this._functionsService.getScmUrl() + "/AZUREJOBS/api/functions/volume?startTime=" + startTimeUTC + "&endTime=" + endTimeUTC + "&numberBuckets=" + numberBuckets;
         return this._http.get(url, { headers: this.getHeadersForScmSite(this._globalStateService.ScmCreds) })
             .retry(3)
-            .map<UsageVolume>(r => r.json());
+            .map<Response, UsageVolume>(r => r.json());
     }
 }

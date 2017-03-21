@@ -16,7 +16,7 @@ export interface AceEditor {
     setReadOnly(value: boolean);
 }
 
-interface AceEditorSession {
+export interface AceEditorSession {
     setMode(mode: string);
     setTabSize(size: number);
     setUseSoftTabs(flag: boolean);

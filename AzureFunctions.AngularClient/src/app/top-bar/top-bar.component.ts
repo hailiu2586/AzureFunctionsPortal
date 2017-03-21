@@ -11,14 +11,7 @@ import {Constants} from '../shared/models/constants';
 import {GlobalStateService} from '../shared/services/global-state.service';
 import {TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
 import {PortalResources} from '../shared/models/portal-resources';
-
-enum TopbarButton {
-    None = <any>"None",
-    AppMonitoring = <any>"AppMonitoring",
-    AppSettings = <any>"AppSettings",
-    Quickstart = <any>"Quickstart",
-    SourceControl = <any>"SourceControl"
-}
+import {TopbarButton} from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'top-bar',

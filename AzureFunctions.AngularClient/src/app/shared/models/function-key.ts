@@ -1,3 +1,4 @@
+
 export interface FunctionKey {
     name: string;
     value: string;
@@ -11,7 +12,7 @@ export interface FunctionKeys {
     links: Array<Links>;
 }
 
-interface Links {
+export interface Links {
     rel: string;
     href: string;
 }

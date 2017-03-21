@@ -43,7 +43,7 @@ export class FunctionMonitorService {
         return this._http.get(url, {
             headers: this.getHeadersForScmSite(this._globalStateService.ScmCreds)
         })
-            .map<FunctionAggregates>(r => r.json().entries.find(x => x.functionName.toLowerCase() === funcName.toLowerCase()));
+            .map(r => r.json().entries.find(x => x.functionName.toLowerCase() === funcName.toLowerCase()));
     }
 
     getSelectedFunctionAggregates(functionId: string) {
@@ -51,7 +51,7 @@ export class FunctionMonitorService {
         return this._http.get(url, {
             headers: this.getHeadersForScmSite(this._globalStateService.ScmCreds)
         })
-            .map<FunctionStats[]>(r => r.json())
+            .map(r => r.json())
     }
 
 
@@ -60,7 +60,7 @@ export class FunctionMonitorService {
         return this._http.get(url, {
             headers: this.getHeadersForScmSite(this._globalStateService.ScmCreds)
         })
-            .map<FunctionInvocations[]>(r => r.json().entries)
+            .map(r => r.json().entries)
             .catch(e => Observable.of([]))
     }
 
@@ -69,7 +69,7 @@ export class FunctionMonitorService {
         return this._http.get(url, {
             headers: this.getHeadersForScmSite(this._globalStateService.ScmCreds)
         })
-            .map<any>(r => r.json())
+            .map(r => r.json())
             .catch(e => Observable.of(null));
     }
 
@@ -78,7 +78,7 @@ export class FunctionMonitorService {
         return this._http.get(url, {
             headers: this.getHeadersForScmSite(this._globalStateService.ScmCreds)
         })
-            .map<string>(r => r.text())
+            .map(r => r.text())
             .catch(e => Observable.of(""))
     }
 }

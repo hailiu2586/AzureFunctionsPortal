@@ -26,12 +26,12 @@ export class UserService {
     getTenants() {
         return this._http.get(Constants.serviceHost + 'api/tenants')
             .catch(e => Observable.of({ json: () => [] }))
-            .map<TenantInfo[]>(r => r.json());
+            .map(r => r.json());
     }
 
     getUser() {
         return this._http.get(Constants.serviceHost + 'api/token')
-            .map<User>(r => r.json());
+            .map(r => r.json());
     }
 
     getToken() {

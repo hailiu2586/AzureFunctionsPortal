@@ -46,7 +46,7 @@ export class BackgroundTasksService {
 
         if (!this._globalStateService.showTryView) {
             this._preIFrameTasks = Observable.timer(1, 60000)
-                .concatMap<string>(() => this._http.get(Constants.serviceHost + 'api/token?plaintext=true').retry(5).map<string>(r => r.text()))
+                .concatMap<number, string>(() => this._http.get(Constants.serviceHost + 'api/token?plaintext=true').retry(5).map(r => r.text()))
                 .subscribe(t => this._userService.setToken(t));
         }
     }
@@ -105,7 +105,7 @@ export class BackgroundTasksService {
                 }
             };
             this._tasks = Observable.timer(1, 60000)
-                .concatMap<{ errors: string[], config: { [key: string]: string }, appSettings: { [key: string]: string }, functionContainer: FunctionContainer }>(() => tasks())
+                .concatMap<number, { errors: string[], config: { [key: string]: string }, appSettings: { [key: string]: string }, functionContainer: FunctionContainer }>(() => tasks())
                 .subscribe(result => handleResult(result));
 
             this._broadcastService.subscribe(BroadcastEvent.RefreshPortal, () => {
@@ -113,7 +113,7 @@ export class BackgroundTasksService {
             });
         } else if (this._globalStateService.FunctionContainer.tryScmCred !== null) {
             this._tasks = Observable.timer(1, 60000)
-                .concatMap<{ errors: string[], config: { [key: string]: string }, appSettings: { [key: string]: string } }>(() =>
+                .concatMap<number, { errors: string[], config: { [key: string]: string }, appSettings: { [key: string]: string } }>(() =>
                     Observable.zip(
                         this._functionsService.getHostErrors().catch(e => Observable.of([])),
                         (e) => ({ errors: e })

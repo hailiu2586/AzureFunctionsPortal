@@ -58,7 +58,7 @@ export class GettingStartedComponent implements OnInit {
         this.geoRegions = [];
         this.functionContainerNameEvent = new EventEmitter<string>();
         this.functionContainerNameEvent
-            .switchMap<{ isValid: boolean; reason: string }>(() => this.validateContainerName(this.functionContainerName))
+            .switchMap<string, { isValid: boolean; reason: string }>(() => this.validateContainerName(this.functionContainerName))
             .subscribe(v => {
                 this.isValidContainerName = v.isValid;
                 this.validationError = v.reason;
@@ -166,7 +166,7 @@ export class GettingStartedComponent implements OnInit {
             return Observable.of({ isValid: false, reason: this._translateService.instant(PortalResources.gettingStarted_validateContainer3) });
         } else {
             return this._armService.validateSiteNameAvailable(this.selectedSubscription.subscriptionId, name)
-                .map<{ isValid: boolean; reason: string }>(v => ({ isValid: v, reason: this._translateService.instant(PortalResources.gettingStarted_validateContainer4, { funcName: name }) }));
+                .map<any, { isValid: boolean; reason: string }>(v => ({ isValid: v, reason: this._translateService.instant(PortalResources.gettingStarted_validateContainer4, { funcName: name }) }));
         }
     }
 }

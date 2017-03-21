@@ -40,13 +40,13 @@ export class ArmService {
     getSubscriptions() {
         var url = `${this.armUrl}/subscriptions?api-version=2014-04-01`;
         return this._http.get(url, { headers: this.getHeaders() })
-            .map<Subscription[]>(r => r.json().value);
+            .map(r => r.json().value);
     }
 
     getFunctionContainers(subscription: string) {
         var url = `${this.armUrl}/subscriptions/${subscription}/resources?api-version=${this.armApiVersion}&$filter=resourceType eq 'Microsoft.Web/sites'`;
         return this._http.get(url, { headers: this.getHeaders() })
-            .map<FunctionContainer[]>(r => {
+            .map(r => {
                 var sites: FunctionContainer[] = r.json().value;
                 return sites.filter(e => e.kind === 'functionapp');
             });
@@ -54,14 +54,14 @@ export class ArmService {
 
     getFunctionContainer(armId: string) {
         var url = `${this.armUrl}${armId}?api-version=${this.websiteApiVersion}`;
-        return this._http.get(url, { headers: this.getHeaders() }).map<FunctionContainer>(r => r.json());
+        return this._http.get(url, { headers: this.getHeaders() }).map(r => r.json());
     }
 
-    getCanAccessAppSettings(armId: string) {
+    getCanAccessAppSettings(armId: string)  : Observable<boolean> {
         var url = `${this.armUrl}${armId}/config/appsettings/list?api-version=${this.websiteApiVersion}`;
         return this._http.post(url, '', { headers: this.getHeaders() })
             .catch(e => Observable.of(undefined))
-            .map<boolean>(r => !!r);
+            .map(r => !!r);
     }
 
     createFunctionContainer(subscription: string, geoRegion: string, name: string) {
@@ -74,14 +74,14 @@ export class ArmService {
     getPublishingCredentials(functionContainer: FunctionContainer) {
         var url = `${this.armUrl}${functionContainer.id}/config/publishingcredentials/list?api-version=${this.websiteApiVersion}`;
         return this._http.post(url, '', { headers: this.getHeaders() })
-            .map<PublishingCredentials>(r => r.json());
+            .map(r => r.json());
     }
 
     getFunctionContainerAppSettings(functionContainer: FunctionContainer | string) {
         let armId = typeof functionContainer === 'string' ? functionContainer : functionContainer.id;
         let url = `${this.armUrl}${armId}/config/appsettings/list?api-version=${this.websiteApiVersion}`;
         return this._http.post(url, '', { headers: this.getHeaders() })
-            .map<{ [key: string]: string }>(r => r.json().properties);
+            .map(r => r.json().properties);
     }
 
     @ClearCache('clearAllCachedData')
@@ -93,7 +93,7 @@ export class ArmService {
         appSettings[Constants.nodeVersionAppSettingName] = Constants.nodeVersion;
         var putUrl = `${this.armUrl}${functionContainer.id}/config/appsettings?api-version=${this.websiteApiVersion}`;
         return this._http.put(putUrl, JSON.stringify({ properties: appSettings }), { headers: this.getHeaders() })
-            .map<{ [key: string]: string }>(r => r.json().properties);
+            .map(r => r.json().properties);
     }
 
     //@ClearCache('clearAllCachedData')
@@ -104,20 +104,20 @@ export class ArmService {
         appSettings[Constants.routingExtensionVersionAppSettingName] = value;
         var putUrl = `${this.armUrl}${functionContainer.id}/config/appsettings?api-version=${this.websiteApiVersion}`;
         return this._http.put(putUrl, JSON.stringify({ properties: appSettings }), { headers: this.getHeaders() })
-            .map<{ [key: string]: string }>(r => r.json().properties);
+            .map(r => r.json().properties);
     }
 
     getConfig(functionContainer: FunctionContainer) {
         var url = `${this.armUrl}${functionContainer.id}/config/web?api-version=${this.websiteApiVersion}`;
         return this._http.get(url, { headers: this.getHeaders() })
-            .map<{ [key: string]: string }>(r => r.json().properties);
+            .map(r => r.json().properties);
     }
 
     getAuthSettings(functionContainer: FunctionContainer | string) {
         let armId = typeof functionContainer === 'string' ? functionContainer : functionContainer.id;
         let url = `${this.armUrl}${armId}/config/authsettings/list?api-version=${this.websiteApiVersion}`;
         return this._http.post(url, '', { headers: this.getHeaders() })
-            .map<{ [key: string]: any }>(r => r.json().properties);
+            .map(r => r.json().properties);
     }
 
     updateMemorySize(functionContainer: FunctionContainer, memorySize: string | number) {
@@ -125,23 +125,23 @@ export class ArmService {
         var url = `${this.armUrl}${functionContainer.id}?api-version=${this.websiteApiVersion}`;
         functionContainer.properties.containerSize = nMemorySize;
         return this._http.put(url, JSON.stringify(functionContainer), { headers: this.getHeaders() })
-            .map<FunctionContainer>(r => r.json());
+            .map(r => r.json());
     }
 
     validateSiteNameAvailable(subscriptionId: string, containerName: string) {
         var url = `${this.armUrl}/subscriptions/${subscriptionId}/providers/Microsoft.Web/ishostnameavailable/${containerName}?api-version=${this.websiteApiVersion}`;
         return this._http.get(url, { headers: this.getHeaders() })
-            .map<boolean>(r => r.json().properties);
+            .map(r => r.json().properties);
     }
 
     getDynamicStampLocations(subscriptionId: string): Observable<{ name: string; displayName: string }[]> {
         var dynamicUrl = `${this.armUrl}/subscriptions/${subscriptionId}/providers/Microsoft.Web/georegions?sku=Dynamic&api-version=${this.websiteApiVersion}`;
         var geoFencedUrl = `${this.armUrl}/subscriptions/${subscriptionId}/providers/Microsoft.Web?api-version=2014-04-01`;
         return Observable.zip(
-            this._http.get(dynamicUrl, { headers: this.getHeaders() }).map<{ name: string; displayName: string }[]>(r => r.json().value.map(e => e.properties)),
-            this._http.get(geoFencedUrl, { headers: this.getHeaders() }).map<string[]>(r => [].concat.apply([], r.json().resourceTypes.filter(e => e.resourceType.toLowerCase() == 'sites').map(e => e.locations))),
+            this._http.get(dynamicUrl, { headers: this.getHeaders() }).map(r => r.json().value.map(e => e.properties)),
+            this._http.get(geoFencedUrl, { headers: this.getHeaders() }).map(r => [].concat.apply([], r.json().resourceTypes.filter(e => e.resourceType.toLowerCase() == 'sites').map(e => e.locations))),
             (d: { name: string, displayName: string }[], g: string[]) => ({ dynamicEnabled: d, geoFenced: g })
-        ).map<{ name: string; displayName: string }[]>(result => result.dynamicEnabled.filter(e => !!result.geoFenced.find(g => g.toLowerCase() === e.name.toLowerCase())));
+        ).map(result => result.dynamicEnabled.filter(e => !!result.geoFenced.find(g => g.toLowerCase() === e.name.toLowerCase())));
     }
 
     warmUpFunctionApp(armId: string) {
@@ -203,7 +203,7 @@ export class ArmService {
         };
 
         this._http.get(providersUrl, { headers: this.getHeaders() })
-            .map<string[]>(r => r.json().value.filter(e => e['registrationState'] === 'Registered').map(e => e['namespace']))
+            .map(r => r.json().value.filter(e => e['registrationState'] === 'Registered').map(e => e['namespace']))
             .subscribe(
             p => registerProviders(p),
             e => registerProviders());
@@ -235,7 +235,7 @@ export class ArmService {
         };
 
         this._http.put(url, JSON.stringify(body), { headers: this.getHeaders() })
-            .map<FunctionContainer>(r => r.json())
+            .map(r => r.json())
             .subscribe(
             r => this.complete(result, r),
             e => this.completeError(result, e));
@@ -245,7 +245,7 @@ export class ArmService {
     private getStorageAccount(subscription: string, geoRegion: string): Observable<StorageAccount> {
         var url = `${this.armUrl}/subscriptions/${subscription}/resourceGroups/AzureFunctions-${geoRegion}/providers/Microsoft.Storage/storageAccounts?api-version=${this.storageApiVersion}`;
         return this._http.get(url, { headers: this.getHeaders() })
-            .map<StorageAccount>(r => {
+            .map(r => {
                 var accounts: StorageAccount[] = r.json().value;
                 return accounts.find(sa => sa.name.startsWith('azurefunctions'));
             });
@@ -254,7 +254,7 @@ export class ArmService {
     private getResrouceGroup(subscription: string, geoRegion: string): Observable<ResourceGroup> {
         var url = `${this.armUrl}/subscriptions/${subscription}/resourceGroups/AzureFunctions-${geoRegion}?api-version=${this.armApiVersion}`;
         return this._http.get(url, { headers: this.getHeaders() })
-            .map<ResourceGroup>(r => r.json());
+            .map(r => r.json());
     }
 
     private createResoruceGroup(subscription: string, geoRegion: string, functionAppName: string, result: Subject<FunctionContainer>) {
@@ -278,7 +278,7 @@ export class ArmService {
             }
         };
         this._http.put(url, JSON.stringify(body), { headers: this.getHeaders() })
-            .retryWhen(e => e.scan<number>((errorCount, err: Response) => {
+            .retryWhen(e => e.scan((errorCount, err: Response) => {
                 if (errorCount >= 5) {
                     throw err;
                 }
@@ -300,7 +300,7 @@ export class ArmService {
             this.getStorageAccountSecrets(subscription, geoRegion, storageAccount, functionAppName, result);
         } else {
             this._http.get(url, { headers: this.getHeaders() })
-                .map<StorageAccount>(r => r.json())
+                .map(r => r.json())
                 .subscribe(
                 sa => {
                     if (sa.properties.provisioningState === 'Succeeded') {
@@ -333,7 +333,7 @@ export class ArmService {
             .subscribe(r => {
             }, error => {
                 return this._http.put(url, JSON.stringify(body), { headers: this.getHeaders() })
-                    .retryWhen(e => e.scan<number>((errorCount, err: Response) => {
+                    .retryWhen(e => e.scan((errorCount, err: Response) => {
                         if (errorCount >= 5) {
                             throw err;
                         }
@@ -345,7 +345,7 @@ export class ArmService {
     private getStorageAccountSecrets(subscription: string, geoRegion: string, storageAccount: StorageAccount, functionAppName: string, result: Subject<FunctionContainer>) {
         var url = `${this.armUrl}/subscriptions/${subscription}/resourceGroups/AzureFunctions-${geoRegion}/providers/Microsoft.Storage/storageAccounts/${storageAccount.name}/listKeys?api-version=${this.storageApiVersion}`;
         return this._http.post(url, '', { headers: this.getHeaders() })
-            .map<{ key1: string, key2: string }>(r => r.json())
+            .map(r => r.json())
             .subscribe(
             secrets => this.createFunctionApp(subscription, geoRegion, functionAppName, storageAccount, secrets, result),
             error => this.completeError(result, error)

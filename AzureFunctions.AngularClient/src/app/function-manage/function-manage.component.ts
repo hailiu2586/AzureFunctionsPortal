@@ -38,7 +38,7 @@ export class FunctionManageComponent {
             }];
         this.valueChange = new Subject<boolean>();
         this.valueChange
-            .switchMap<FunctionInfo>((state, index) => {
+            .switchMap<boolean, FunctionInfo>((state, index) => {
                 this.selectedFunction.config.disabled = state;
                 return this._functionsService.updateFunction(this.selectedFunction);
             })

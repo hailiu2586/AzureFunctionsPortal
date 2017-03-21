@@ -15,7 +15,7 @@ import {PortalService} from '../shared/services/portal.service';
 import {AiService} from '../shared/services/ai.service';
 import {ApiProxy} from '../shared/models/api-proxy';
 
-enum TopbarButton {
+export enum TopbarButton {
     None = <any>"None",
     AppMonitoring = <any>"AppMonitoring",
     AppSettings = <any>"AppSettings",
